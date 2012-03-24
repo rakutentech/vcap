@@ -133,6 +133,7 @@ end
 root = File.expand_path('../..', __FILE__)
 AppConfig[:directories].each do |type, path|
   next if type == :nuke_tmp_on_startup
+  next if type == :resources
   next if path[0,1] == '/'
   AppConfig[:directories][type] = File.expand_path(File.join(root, path))
 end

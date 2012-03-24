@@ -50,6 +50,9 @@ gem 'SystemTimer', '~> 1.2', :platforms => :mri_18
 gem 'uuidtools', '~> 2.1.2'
 gem 'rest-client', '~> 1.6.7'
 
+# S3 support for shared resources
+gem 'aws-s3'
+
 # rspec-rails is outside the 'test' group in order to consistently provide Rake tasks.
 gem 'rspec-rails', '>= 2.4.1'
 group :test do
