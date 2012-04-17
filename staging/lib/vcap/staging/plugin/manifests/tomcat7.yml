@@ -1,0 +1,27 @@
+---
+name: "tomcat7"
+runtimes:
+  - "java":
+      description: "Java 6"
+      version: "1.6"
+      executable: "java"
+      default: true
+  - "java7":
+      description: "Java 7"
+      version: "1.7"
+      executable: "java"
+      default: false
+app_servers:
+  - "tomcat7":
+      description: "Tomcat"
+      executable: "false"
+      default: true
+detection:
+  - "*.war": true
+staged_services:
+  - "name": "mysql"
+    "version": "*"
+  - "name": "postgresql"
+    "version": "*"
+
+# vim: filetype=yaml
