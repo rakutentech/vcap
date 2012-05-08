@@ -79,6 +79,42 @@ describe App do
     end
   end
 
+  describe "#enforce_app_resources" do
+    before :each do
+      @user_a = create_user('a@foo.com', 'a')
+    end
+
+    it "should not set the resources when 'enforce_app_resources' is null" do
+      AppConfig[:enforce_app_resources] = nil
+      @app = App.create(
+        :name      => 'foobar',
+        :owner     => @user_a,
+        :runtime   => 'ruby18',
+        :framework => 'sinatra')
+      @app.should be_valid
+      @app.memory.should == 256
+      @app.file_descriptors.should == 256  
+      @app.disk_quota.should == 2048       
+    end
+
+    it "should set the resources when 'enforce_app_resources' is set" do
+      AppConfig[:enforce_app_resources] = {
+        :memory => 4096,
+        :file_descriptors => 65536,
+        :disk_quota => 8192
+      }
+      @app = App.create(
+        :name      => 'foobar',
+        :owner     => @user_a,
+        :runtime   => 'ruby18',
+        :framework => 'sinatra')
+      @app.should be_valid
+      @app.memory.should == 4096
+      @app.file_descriptors.should == 65536
+      @app.disk_quota.should == 8192 
+    end
+  end
+
   def create_user(email, pw)
     u = User.new(:email => email)
     u.set_and_encrypt_password(pw)
