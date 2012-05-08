@@ -18,6 +18,8 @@ class App < ActiveRecord::Base
 
   after_create :add_owner_as_collaborator
 
+  before_save :enforce_app_resources
+  
   scope :started, lambda { where("apps.state = ?", 'STARTED') }
   scope :stopped, lambda { where("apps.state = ?", 'STOPPED') }
 
@@ -87,6 +89,16 @@ class App < ActiveRecord::Base
   def set_defaults
     self.metadata ||= {}
   end
+
+  def enforce_app_resources
+    cfg = AppConfig[:enforce_app_resources]
+    if cfg
+      [:memory, :file_descriptors, :disk_quota].each do |attr|
+        write_attribute(attr, cfg[attr]) if cfg[attr]
+      end
+    end
+  end
+  
 
   def total_memory
     instances * memory
